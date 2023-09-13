@@ -1,7 +1,3 @@
 #!/bin/bash
 
-if curl https://google.com &> /dev/null; then
-		exit 0
-	else
-		exit 1
-	fi
+curl https://google.com &> /dev/null && exit 0 || exit 1
