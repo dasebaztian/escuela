@@ -56,7 +56,7 @@ function procesar_directorios {
     local ext_final="$3";
     cambiar_exts_directorio "$dir_base" "$ext1" "$ext_final";
     for sub_dir in "$dir_base"/*; do
-		test -d "$sub_dir" && procesar_directorios  "$sub_dir" "$ext1" "$ext_final"
+2		test -d "$sub_dir" && procesar_directorios  "$sub_dir" "$ext1" "$ext_final"
     done
 }
 
