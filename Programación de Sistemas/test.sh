@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 ayuda() {
     cat << EOF
@@ -13,19 +13,30 @@ EOF
 
 calculoTiempo() {
 	local archivo="$1" 
+	local segundos="$2"
 	fechaM="$(stat "$archivo" | grep -Po "^Modificación. \K[^.]+")"
 	pasado=$(date --date="$fechaM" +"%s")
 	presente=$(date +"%s")
 	let dif=presente-pasado
-	echo $dif
-	if [ $dif -le 3600 ]; then
-		echo "ya entre"		
+	let segundos=segundos
+	if [ $dif -le $segundos ]; then
+		echo "$archivo"
+
 	fi
 }
 
-archivo="$1"
-calculoTiempo $archivo
-#test -f "$archivo" || { ayuda; exit 1; }
+recursivo(){
+	local directorio="$1"
+	local segundos="$2"
+	for archivo in "$directorio"/*; do
+		test -f "$archivo" && calculoTiempo "$archivo" "$segundos"
+		test -d "$archivo" && recursivo "$archivo" "$segundos"	
+	done 
+}
 
-#fechaM=$(stat "$archivo" | grep -Po "^Modificación. \K[^.]+")
-#echo "$fechaM"
+directorio="$1"
+segundos="$2"
+test -d "$directorio" || { echo "El primer parámetro debe de ser un directorio" ; ayuda ; exit 1 ; }
+test "$segundos" || { echo "El segundo parámetro no puede estar vacio" ; ayuda ; exit 1 ; }
+recursivo "$directorio" "$segundos"
+
