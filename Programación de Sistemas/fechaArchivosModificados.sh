@@ -2,11 +2,12 @@
 
 ayuda() {
     cat << EOF
-fechaArchivosModificados.sh directorio
+fechaArchivosModificados.sh directorio segundos
 Te dice que archivos han sido modificados del directorio que se ha especificado
 el proceso es recursivo
 Parámetros:
-   archivo: es un archivo que existe
+   directorio: Es un directorio sobre el que se va a escanear los archivos
+   segundos: Es el tiempo en segundos sobre el que se quiere saber los archivos modiicados
 EOF
 }
 
@@ -20,8 +21,7 @@ calculoTiempo() {
 	let dif=presente-pasado
 	let segundos=segundos
 	if [ $dif -le $segundos ]; then
-		echo "$archivo"
-
+		echo "$archivo Fue modificado hace: $dif segundos"
 	fi
 }
 
